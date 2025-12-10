@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Placeholder Images</title>
+</head>
+<body>
+    <h2>Generating placeholder images...</h2>
+    <script>
+        // Function to create placeholder image
+        function createPlaceholder(width, height, text, color, filename) {
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, width, height);
+            
+            // Text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 30px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Word wrap
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            
+            for (let i = 1; i < words.length; i++) {
+                const word = words[i];
+                const testLine = currentLine + ' ' + word;
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > width - 100) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            lines.push(currentLine);
+            
+            const lineHeight = 40;
+            const startY = (height - (lines.length * lineHeight)) / 2 + 20;
+            
+            lines.forEach((line, index) => {
+                ctx.fillText(line, width / 2, startY + (index * lineHeight));
+            });
+            
+            // Download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+        
+        // Create images
+        setTimeout(() => {
+            createPlaceholder(800, 500, 'Luxury Living Room POP Ceiling', '#1a7a6e', 'hero1.jpg');
+        }, 100);
+        setTimeout(() => {
+            createPlaceholder(800, 500, 'Master Bedroom Gypsum Ceiling', '#2d9687', 'hero2.jpg');
+        }, 200);
+        setTimeout(() => {
+            createPlaceholder(800, 500, 'Contemporary Hall Design', '#1a7a6e', 'hero3.jpg');
+        }, 300);
+        setTimeout(() => {
+            createPlaceholder(800, 500, 'Luxury Interior Ceiling', '#2d9687', 'hero4.jpg');
+        }, 400);
+        setTimeout(() => {
+            createPlaceholder(800, 500, 'Kitchen PVC Ceiling', '#1a7a6e', 'hero5.jpg');
+        }, 500);
+        setTimeout(() => {
+            createPlaceholder(800, 500, 'Wooden Ceiling Villa', '#2d9687', 'hero6.jpg');
+        }, 600);
+        setTimeout(() => {
+            createPlaceholder(800, 500, 'Corporate Office Grid Ceiling', '#1a7a6e', 'hero7.jpg');
+        }, 700);
+        setTimeout(() => {
+            createPlaceholder(800, 500, 'Elegant Dining Room', '#2d9687', 'hero8.jpg');
+        }, 800);
+        
+        // Portfolio images
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Modern POP Ceiling', '#1a7a6e', 'work1.jpg');
+        }, 1000);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Elegant POP Design', '#2d9687', 'work2.jpg');
+        }, 1100);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Gypsum Board Ceiling', '#1a7a6e', 'work3.jpg');
+        }, 1200);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Modern Gypsum Design', '#2d9687', 'work4.jpg');
+        }, 1300);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'PVC Ceiling Installation', '#1a7a6e', 'work5.jpg');
+        }, 1400);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Waterproof PVC Ceiling', '#2d9687', 'work6.jpg');
+        }, 1500);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Premium Wooden Ceiling', '#1a7a6e', 'work7.jpg');
+        }, 1600);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Natural Wood Finish', '#2d9687', 'work8.jpg');
+        }, 1700);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Corporate Office Ceiling', '#1a7a6e', 'work9.jpg');
+        }, 1800);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Retail Space Ceiling', '#2d9687', 'work10.jpg');
+        }, 1900);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Dining Room Ceiling', '#1a7a6e', 'work11.jpg');
+        }, 2000);
+        setTimeout(() => {
+            createPlaceholder(600, 400, 'Grand Hall Ceiling', '#2d9687', 'work12.jpg');
+        }, 2100);
+        
+        setTimeout(() => {
+            document.body.innerHTML = '<h2>All images generated! Check your downloads folder and move them to the images folder.</h2>';
+        }, 3000);
+    </script>
+</body>
+</html>
