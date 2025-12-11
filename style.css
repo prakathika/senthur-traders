@@ -85,8 +85,9 @@ body {
 }
 
 .logo img {
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: auto;
+    max-width: 200px;
     object-fit: contain;
     border-radius: 5px;
 }
@@ -794,13 +795,13 @@ body {
     position: relative;
     border-radius: 15px;
     overflow: hidden;
-    height: 350px;
+    height: 400px;
     box-shadow: var(--shadow-hover);
     transition: all 0.4s;
 }
 
 .about-img-item.large {
-    height: 350px;
+    height: 400px;
 }
 
 .about-img-item:hover {
@@ -811,12 +812,13 @@ body {
 .about-img-item img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background: var(--white);
     transition: transform 0.5s;
 }
 
 .about-img-item:hover img {
-    transform: scale(1.15);
+    transform: scale(1.05);
 }
 
 .about-content {
