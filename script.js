@@ -442,6 +442,61 @@ window.addEventListener('scroll', () => {
     });
 });
 
+// View More Projects Functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const viewMoreBtn = document.getElementById('viewMoreBtn');
+    const moreProjects = document.querySelectorAll('.more-projects');
+    let isExpanded = false;
+
+    if (viewMoreBtn) {
+        viewMoreBtn.addEventListener('click', () => {
+            isExpanded = !isExpanded;
+            
+            moreProjects.forEach(project => {
+                if (isExpanded) {
+                    project.style.display = 'block';
+                    setTimeout(() => {
+                        project.style.opacity = '1';
+                        project.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    project.style.opacity = '0';
+                    project.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        project.style.display = 'none';
+                    }, 300);
+                }
+            });
+            
+            // Update button text
+            if (isExpanded) {
+                viewMoreBtn.innerHTML = '<i class="fas fa-times"></i> Show Less';
+                viewMoreBtn.style.background = 'linear-gradient(135deg, var(--accent-color), #d35400)';
+            } else {
+                viewMoreBtn.innerHTML = '<i class="fas fa-images"></i> View More Projects';
+                viewMoreBtn.style.background = 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))';
+            }
+            
+            // Scroll to the button smoothly when collapsing
+            if (!isExpanded) {
+                setTimeout(() => {
+                    viewMoreBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            }
+        });
+    }
+});
+
+// Add transition styles to more-projects items
+document.addEventListener('DOMContentLoaded', () => {
+    const moreProjects = document.querySelectorAll('.more-projects');
+    moreProjects.forEach(project => {
+        project.style.opacity = '0';
+        project.style.transform = 'translateY(20px)';
+        project.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    });
+});
+
 // Console welcome message
 console.log('%c Welcome to Senthur Traders! ', 'background: #1a7a6e; color: white; font-size: 20px; padding: 10px;');
 console.log('%c Professional False Ceiling Solutions ', 'background: #2d9687; color: white; font-size: 14px; padding: 5px;');
