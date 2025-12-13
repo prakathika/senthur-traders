@@ -191,11 +191,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Portfolio Filter Functionality
+// Portfolio Filter Functionality with View More
 document.addEventListener('DOMContentLoaded', () => {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const portfolioItems = document.querySelectorAll('.portfolio-item');
+    const viewMoreBtn = document.getElementById('viewMoreBtn');
+    const itemsPerPage = 12; // Show 12 items initially (3 rows x 4 columns)
+    let showAll = false;
 
+    // Function to show/hide items based on filter and view more state
+    function filterItems(filterValue) {
+        let visibleCount = 0;
+        
+        portfolioItems.forEach((item, index) => {
+            const category = item.getAttribute('data-category');
+            
+            if (filterValue === 'all' || category === filterValue) {
+                // Item matches filter
+                if (!showAll && visibleCount >= itemsPerPage) {
+                    // Hide items beyond the limit when not showing all
+                    item.style.display = 'none';
+                } else {
+                    item.style.display = 'block';
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    }, visibleCount * 50);
+                }
+                visibleCount++;
+            } else {
+                item.style.opacity = '0';
+                item.style.transform = 'scale(0.8)';
+                setTimeout(() => {
+                    item.style.display = 'none';
+                }, 300);
+            }
+        });
+
+        // Show/hide View More button
+        if (viewMoreBtn) {
+            if (visibleCount > itemsPerPage && !showAll) {
+                viewMoreBtn.style.display = 'inline-flex';
+                viewMoreBtn.innerHTML = 'View More Projects <i class="fas fa-arrow-down"></i>';
+            } else if (showAll && visibleCount > itemsPerPage) {
+                viewMoreBtn.style.display = 'inline-flex';
+                viewMoreBtn.innerHTML = 'Show Less <i class="fas fa-arrow-up"></i>';
+            } else {
+                viewMoreBtn.style.display = 'none';
+            }
+        }
+    }
+
+    // Filter button click event
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
             // Remove active class from all buttons
@@ -204,42 +251,45 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.add('active');
 
             const filterValue = button.getAttribute('data-filter');
-
-            portfolioItems.forEach(item => {
-                const category = item.getAttribute('data-category');
-                
-                if (filterValue === 'all' || category === filterValue) {
-                    item.style.display = 'block';
-                    // Add fade-in animation
-                    setTimeout(() => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'scale(1)';
-                    }, 10);
-                } else {
-                    item.style.opacity = '0';
-                    item.style.transform = 'scale(0.8)';
-                    setTimeout(() => {
-                        item.style.display = 'none';
-                    }, 300);
-                }
-            });
+            showAll = false; // Reset to show limited items when filter changes
+            filterItems(filterValue);
         });
     });
 
-    // Initial animation for portfolio items
+    // View More button click event
+    if (viewMoreBtn) {
+        viewMoreBtn.addEventListener('click', () => {
+            showAll = !showAll;
+            const activeFilter = document.querySelector('.filter-btn.active');
+            const filterValue = activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
+            filterItems(filterValue);
+            
+            // Scroll to portfolio section when showing less
+            if (!showAll) {
+                document.getElementById('works').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    }
+
+    // Initial load - show first 12 items only
+    filterItems('all');
+
+    // Initial animation for visible portfolio items
     portfolioItems.forEach((item, index) => {
         item.style.opacity = '0';
         item.style.transform = 'translateY(30px)';
         item.style.transition = 'all 0.5s ease';
         
-        setTimeout(() => {
-            item.style.opacity = '1';
-            item.style.transform = 'translateY(0)';
-        }, index * 100);
+        if (index < itemsPerPage) {
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            }, index * 100);
+        }
     });
 });
 
-// Load More Button Functionality
+// Load More Button Functionality (Legacy)
 const loadMoreBtn = document.querySelector('.load-more-btn');
 if (loadMoreBtn) {
     loadMoreBtn.addEventListener('click', () => {
